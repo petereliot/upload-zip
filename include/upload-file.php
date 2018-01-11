@@ -1,5 +1,5 @@
 <?php
-define("IMG_DIR/","../thumbnails/");
+define("IMG_DIR","../thumbnails/");
 
     // vide le dossier image avant tout
     $dossier_traite = IMG_DIR;
