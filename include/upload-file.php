@@ -50,12 +50,12 @@ define("IMG_DIR","../thumbnails/");
         $zip->extractTo(IMG_DIR, $aZipFileName);
 
         // on vérifie quoiqui n'y a dans le dossier ?
-        $dossier_traite = IMG_DIR;
-        $repertoire = opendir($dossier_traite);
+        $repertoire = opendir(IMG_DIR);
         while (($fichier = readdir($repertoire) !== false)) {
-            $chemin = $dossier_traite."/".$fichier;
+            $chemin = $dossier_traite.$fichier;
             if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
             {
+               echo "\n what's way !! ".$chemin;
                echo "\nfichier trouvé ok !! ".$fichier;
             }
         }
