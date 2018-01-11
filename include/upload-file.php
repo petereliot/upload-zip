@@ -1,7 +1,7 @@
 <?php
 define("IMG_DIR","../thumbnails");
 
-// vide le dosseir image avant tout
+// vide le dossier image avant tout
 $dossier_traite = IMG_DIR;
 $repertoire = opendir($dossier_traite); // On définit le répertoire dans lequel on souhaite travailler.
 while (($fichier = readdir($repertoire) !== false)) {// On lit chaque fichier du répertoire dans la boucle.
@@ -61,41 +61,57 @@ echo " upload ok ";
     // 5) open the uploaded zip
     $res = $zip->open(IMG_DIR."/".$thename);
 
-	if ($res === true) {
-
-
-        for($i = 0; $i < $zip->numFiles; $i++) {
-            $ext = strtolower(pathinfo($zip->getNameIndex($i), PATHINFO_EXTENSION));
+	if ($res === true)
+	{
+        for($i = 0; $i < $zip->numFiles; $i++)
+        {
+            /*
+             *  filename = pics/alexwende_4.gif
+             fileinfo = array(4) {
+              ["dirname"]=>
+              string(4) "pics"
+              ["basename"]=>
+              string(15) "alexwende_4.gif"
+              ["extension"]=>
+              string(3) "gif"
+              ["filename"]=>
+              string(11) "alexwende_4"
+            }
+             */
+            $filename = $zip->getNameIndex($i);
+            $fileinfo = pathinfo($zip->getNameIndex($i));
+            $ext = $fileinfo['extension'];
+            $toFileName = $fileinfo["basename"];
+            echo "\n filename = ".$filename;
+            echo "\n fileinfo = ";
+            var_dump($fileinfo);
             //if ( substr( $entry, -1 ) == '/' ) continue; // skip directories
-            if((stristr($zip->statIndex($i)['name'],"__MACOSX") === false && stristr($zip->statIndex($i)['name'],".DS_Store") === false )
-                && ($ext == "jpg" || $ext == "png" || $ext == "gif" ) && (substr( $zip->getNameIndex($i), -1 ) !== '/') ) {
-                $filename = $zip->getNameIndex($i);
-                $fileinfo = pathinfo($filename);
-                echo "\n filename = ".$filename;
-                echo "\n fileinfo = ";
-                var_dump($fileinfo);
+            if((stristr($filename,"__MACOSX") === false && stristr($filename,".DS_Store") === false )
+                && ($ext == "jpg" || $ext == "png" || $ext == "gif" ) && (substr( $filename, -1 ) !== '/') )
+            {
                 $from = "\n zip://" . $path . "#" . $filename;
-                $to = "\n".IMG_DIR."/" . $filename;
-                //copy("zip://".$filename, IMG_DIR."/" . fileinfo["basename"]);
-                $aFileImages[] = $filename;
+                $to = "\n".IMG_DIR."/" . $fileinfo["basename"];
+                copy("zip://".$filename, IMG_DIR."/" . $toFileName);
+                $aFileImages[] = $toFileName;
             }
         }
-        /*
-         *  filename = pics/alexwende_4.gif
-         fileinfo = array(4) {
-          ["dirname"]=>
-          string(4) "pics"
-          ["basename"]=>
-          string(15) "alexwende_4.gif"
-          ["extension"]=>
-          string(3) "gif"
-          ["filename"]=>
-          string(11) "alexwende_4"
+
+        $dossier_traite = IMG_DIR;
+        $repertoire = opendir($dossier_traite); // On définit le répertoire dans lequel on souhaite travailler.
+        while (($fichier = readdir($repertoire) !== false)) {// On lit chaque fichier du répertoire dans la boucle.
+            $chemin = $dossier_traite."/".$fichier; // On définit le chemin du fichier à effacer.
+            // Si le fichier n'est pas un répertoire…
+            if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
+            {
+                unlink($chemin); // On efface.
+            }
         }
-         */
+        closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
+
         //$aFileImages[] = $filename;
 
 
+      //  $ext = strtolower(pathinfo($zip->getNameIndex($i), PATHINFO_EXTENSION));
                     /*
                      * retrieve origin image width & height
                      *
