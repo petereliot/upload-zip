@@ -45,6 +45,24 @@ echo " upload ok ";
     $res = $zip->open(IMG_DIR."/".$thename);
 
 	if ($res === true) {
+
+        print_r($zip);
+        var_dump($zip);
+        echo "Nombre de fichiers : " . $zip->numFiles . "\n";
+        echo "Statut : " . $zip->status  . "\n";
+        echo "Statut du système : " . $zip->statusSys . "\n";
+        echo "Nom du fichier : " . $zip->filename . "\n";
+        echo "Commentaire : " . $zip->comment . "\n";
+
+        for ($i=0; $i<$zip->numFiles;$i++) {
+            echo "index : $i\n";
+            print_r($zip->statIndex($i));
+        }
+        echo "Nombre de fichiers :" . $zip->numFiles . "\n";
+
+
+
+
 	    var_dump($zip);
             // here you can run a custom function for the particular extracted file
             // 6) loop on each entries of the zip
@@ -58,23 +76,26 @@ echo " upload ok ";
                 $zip->extractTo(IMG_DIR."/" . $filename, array('*.jpg','*.jpeg','*.png','*.gif') );
 
                 // 09) we skip directories
-                $dir = IMG_DIR."/";
+               /* $dir = IMG_DIR."/";
                 //  si le dossier pointe existe
-                if (is_dir($dir)) {
+                if (is_dir($dir) ) {
 
                     // si il contient quelque chose
                     if ($dh = opendir($dir)) {
 
                         // boucler tant que quelque chose est trouve
                         while (($file = readdir($dh)) !== false) {
-
-                            // affiche le nom et le type
-                            echo "fichier : $file : type : " . filetype($dir . $file) . "<br />\n";
+                            if($file !== "__MACOSX" && $file !== ".DS_Store") {
+                                echo pathinfo($file, PATHINFO_EXTENSION);
+                                // affiche le nom et le type
+                                echo "fichier : $file : type : " . filetype($dir . $file) . "<br />\n";
+                            }
                         }
                         // on ferme la connection
                         closedir($dh);
                     }
-                }
+                }*/
+
                 // 10) retrieve absolute zip entries filenames $fileZipLocation = "zip://".$tempFileName."#".$filename;
 
                 // 11) retrieve file content-type
