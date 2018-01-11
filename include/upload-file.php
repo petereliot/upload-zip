@@ -58,7 +58,23 @@ echo " upload ok ";
                 $zip->extractTo(IMG_DIR."/" . $filename, array('*.jpg','*.jpeg','*.png','*.gif') );
 
                 // 09) we skip directories
+                $dir = IMG_DIR."/";
+                //  si le dossier pointe existe
+                if (is_dir($dir)) {
 
+                    // si il contient quelque chose
+                    if ($dh = opendir($dir)) {
+
+                        // boucler tant que quelque chose est trouve
+                        while (($file = readdir($dh)) !== false) {
+
+                            // affiche le nom et le type
+                            echo "fichier : $file : type : " . filetype($dir . $file) . "<br />\n";
+                        }
+                        // on ferme la connection
+                        closedir($dh);
+                    }
+                }
                 // 10) retrieve absolute zip entries filenames $fileZipLocation = "zip://".$tempFileName."#".$filename;
 
                 // 11) retrieve file content-type
@@ -72,7 +88,11 @@ echo " upload ok ";
                 // 15) copy file from zip to thumbnails relative dir
 
                 // 16) Resize part
-                $aFileImages[] = $filename;
+
+
+                //$aFileImages[] = $filename;
+
+
                     /*
                      * retrieve origin image width & height
                      *
@@ -89,7 +109,9 @@ echo " upload ok ";
                      * imagecopyresampled()
                      * imageXXX()
                     */
-                $size = getimagesize($filename); // chaine avec height & width
+
+
+                    //$size = getimagesize($filename); // chaine avec height & width
 
                     // 17) for imagecreatefromXXX we can use eval(); with function that expect string as parameters
 
