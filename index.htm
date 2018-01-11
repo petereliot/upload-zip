@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript">
+      function uploadZip(triggerLink)
+      {
+            console.log(triggerLink);
+            // hide trigger link before promise
+            // write default message in info paragraph
+
+          document.getElementById("info").innerHTML = " Wait ";
+
+          //fetch POST DATAS to php script
+
+          fetch("include/upload-file.php")
+              .then(function(res){ return res.json(); })
+              .then(function(data){ console.log( JSON.stringify(data) )
+
+           }).catch (function (error) {
+              console.log('Request failed', error);
+          });
+      }
+
+
+    </script>
+  </head>
+  <body>
+    <form id="the_form" action="include/upload-file.php" enctype="multipart/form-data" method="post">
+
+        <input type="hidden" name="MAX_FILE_SIZE" value="3000000">
+        <input name="pictures" type="file" id="pictures" size="50" />
+        <!--a href="#" onclick="uploadZip(this);">Download</a-->
+        <input type="submit" value="Send" />
+    </form>
+    <p id="info"></p>
+  </body>
+</html>
