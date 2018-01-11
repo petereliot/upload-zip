@@ -55,8 +55,13 @@ echo " upload ok ";
         echo "Commentaire : " . $zip->comment . "\n";
 
         for ($i=0; $i<$zip->numFiles;$i++) {
+
             echo "index : $i\n";
-            print_r($zip->statIndex($i));
+            echo " quoi :: ".$zip->statIndex($i)['name'];
+            if ($zip->statIndex($i)['name']!="__MACOSX" && && $zip->statIndex($i)['name'] !== ".DS_Store")) {
+                print_r($zip->statIndex($i));
+                echo "\r\n ".pathinfo($zip->statIndex($i)['name'], PATHINFO_EXTENSION);;
+            }
         }
         echo "Nombre de fichiers :" . $zip->numFiles . "\n";
 
