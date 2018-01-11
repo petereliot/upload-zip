@@ -1,5 +1,5 @@
 <?php
-define("IMG_DIR/","../thumbnails");
+define("IMG_DIR/","../thumbnails/");
 
     // vide le dossier image avant tout
     $dossier_traite = IMG_DIR;
@@ -66,8 +66,6 @@ define("IMG_DIR/","../thumbnails");
     else {
         echo " Erreur de dezippage ";
     }
-
-      //  $ext = strtolower(pathinfo($zip->getNameIndex($i), PATHINFO_EXTENSION));
                     /*
                      * retrieve origin image width & height
                      *
