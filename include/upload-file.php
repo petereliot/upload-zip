@@ -51,11 +51,12 @@ define("IMG_DIR","../thumbnails/");
 
         // on vérifie quoiqui n'y a dans le dossier ?
         $repertoire = opendir(IMG_DIR);
+        $fichier = readdir($repertoire);
+        echo " \n file == ".$fichier;
         while (($fichier = readdir($repertoire) !== false)) {
-            $chemin = $dossier_traite.$fichier;
+
             if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
             {
-               echo "\n what's way !! ".$chemin;
                echo "\nfichier trouvé ok !! ".$fichier;
             }
         }
@@ -102,4 +103,4 @@ define("IMG_DIR","../thumbnails/");
         header('Content-Type: application/json');
 
         // 23) finally return error message or the array of images
-        echo json_encode($aFileImages);
+       // echo json_encode($aFileImages);
