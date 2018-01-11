@@ -7,6 +7,7 @@ define("IMG_DIR","../thumbnails/");
     while (($fichier = readdir($repertoire) !== false)) {// On lit chaque fichier du répertoire dans la boucle.
         $chemin = $dossier_traite."".$fichier; // On définit le chemin du fichier à effacer.
         // Si le fichier n'est pas un répertoire…
+        echo " file to del = ".$fichier;
         if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
         {
             unlink($chemin); // On efface.
