@@ -2,9 +2,9 @@
 define("IMG_DIR","../thumbnails");
 
 // vide le dosseir image avant tout
-$dossier_traite = "IMG_DIR";
+$dossier_traite = IMG_DIR;
 $repertoire = opendir($dossier_traite); // On définit le répertoire dans lequel on souhaite travailler.
-while (false !== ($fichier = readdir($repertoire))) {// On lit chaque fichier du répertoire dans la boucle.
+while (($fichier = readdir($repertoire) !== false)) {// On lit chaque fichier du répertoire dans la boucle.
     $chemin = $dossier_traite."/".$fichier; // On définit le chemin du fichier à effacer.
     // Si le fichier n'est pas un répertoire…
     if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
