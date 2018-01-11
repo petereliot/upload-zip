@@ -13,7 +13,7 @@ UPLOAD_ERR_CANT_WRITE: 7
 UPLOAD_ERR_EXTENSION: 8
 UPLOAD_ERR_PARTIAL: 3
  */
-
+$thename = "";
     echo " error = ".$_FILES["pictures"]["error"];
     if ($_FILES["pictures"]["error"] == UPLOAD_ERR_OK) {
 echo " upload ok ";
@@ -59,8 +59,7 @@ echo " upload ok ";
             echo "index : $i\n";
             echo " quoi :: ".$zip->statIndex($i)['name'];
             $ext = strtolower(pathinfo($zip->statIndex($i)['name'], PATHINFO_EXTENSION));
-            if (stristr($zip->statIndex($i)['name'],"__MACOSX") === false && stristr($zip->statIndex($i)['name'],".DS_Store") === false )
-                && ($ext == "jpg" || $ext == "png" || $ext == "gif" ) {
+            if((stristr($zip->statIndex($i)['name'],"__MACOSX") === false && stristr($zip->statIndex($i)['name'],".DS_Store") === false ) && ($ext == "jpg" || $ext == "png" || $ext == "gif" )) {
                 print_r($zip->statIndex($i));
             }
         }
