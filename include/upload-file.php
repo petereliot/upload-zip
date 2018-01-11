@@ -53,12 +53,14 @@ define("IMG_DIR","../thumbnails/");
         $repertoire = opendir(IMG_DIR);
         $fichier = readdir($repertoire);
         echo " \n file == ".$fichier;
-        while (($fichier = readdir($repertoire) !== false)) {
+        while ($fichier) {
 
+            echo "\n ".$fichier;
             if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
             {
-               echo "\nfichier trouvé ok !! ".$fichier;
+               echo "\n ".$fichier;
             }
+            $fichier = readdir($repertoire);
         }
         closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
 
