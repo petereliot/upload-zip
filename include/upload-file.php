@@ -53,7 +53,7 @@ echo " upload ok ";
                 // 7) retrieve local entrie filenames
                 // 8) retrieve file "basename" (filenames without directory)
                 $filename = $zip->getNameIndex($i);
-                echo " <br/> ".$filename;
+                echo " \r\n the filename :: ".$filename;
                 //$zip->extractTo(IMG_DIR."/", array($zip->getNameIndex($i)));
                 $zip->extractTo(IMG_DIR."/" . $filename, array('*.jpg','*.jpeg','*.png','*.gif') );
 
