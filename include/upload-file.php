@@ -48,75 +48,25 @@ echo " upload ok ";
 
         print_r($zip);
         var_dump($zip);
-        echo "Nombre de fichiers : " . $zip->numFiles . "\n";
-        echo "Statut : " . $zip->status  . "\n";
-        echo "Statut du système : " . $zip->statusSys . "\n";
-        echo "Nom du fichier : " . $zip->filename . "\n";
-        echo "Commentaire : " . $zip->comment . "\n";
+        echo "\nNombre de fichiers : " . $zip->numFiles . "\n";
+        echo "\nStatut : " . $zip->status  . "\n";
+        echo "\nStatut du système : " . $zip->statusSys . "\n";
+        echo "\nNom du fichier : " . $zip->filename . "\n";
+        echo "\nCommentaire : " . $zip->comment . "\n";
 
-        for ($i=0; $i<$zip->numFiles;$i++) {
-//if(stristr($string, 'terre') === FALSE)
-            echo "index : $i\n";
-            echo " quoi :: ".$zip->statIndex($i)['name'];
-            $ext = strtolower(pathinfo($zip->statIndex($i)['name'], PATHINFO_EXTENSION));
-            if((stristr($zip->statIndex($i)['name'],"__MACOSX") === false && stristr($zip->statIndex($i)['name'],".DS_Store") === false ) && ($ext == "jpg" || $ext == "png" || $ext == "gif" )) {
-                print_r($zip->statIndex($i));
+
+        for($i = 0; $i < $zip->numFiles; $i++) {
+            $ext = strtolower(pathinfo($zip->getNameIndex($i), PATHINFO_EXTENSION));
+            //if ( substr( $entry, -1 ) == '/' ) continue; // skip directories
+            if(($ext == "jpg" || $ext == "png" || $ext == "gif" ) && (substr( $zip->getNameIndex($i), -1 ) !== '/') ) {
+                $filename = $zip->getNameIndex($i);
+                $fileinfo = pathinfo($filename);
+                copy("zip://" . $path . "#" . $filename, "/your/new/destination/" . $fileinfo['basename']);
+                $aFileImages[] = $filename;
             }
         }
-        echo "Nombre de fichiers :" . $zip->numFiles . "\n";
 
-
-
-
-	    var_dump($zip);
-            // here you can run a custom function for the particular extracted file
-            // 6) loop on each entries of the zip
-            for($i = 0; $i < $zip->numFiles; $i++) {
-                echo " <br/> ".$zip->numFiles;
-                // 7) retrieve local entrie filenames
-                // 8) retrieve file "basename" (filenames without directory)
-                $filename = $zip->getNameIndex($i);
-                echo " \r\n the filename :: ".$filename;
-                //$zip->extractTo(IMG_DIR."/", array($zip->getNameIndex($i)));
-                $zip->extractTo(IMG_DIR."/" . $filename, array('*.jpg','*.jpeg','*.png','*.gif') );
-
-                // 09) we skip directories
-               /* $dir = IMG_DIR."/";
-                //  si le dossier pointe existe
-                if (is_dir($dir) ) {
-
-                    // si il contient quelque chose
-                    if ($dh = opendir($dir)) {
-
-                        // boucler tant que quelque chose est trouve
-                        while (($file = readdir($dh)) !== false) {
-                            if($file !== "__MACOSX" && $file !== ".DS_Store") {
-                                echo pathinfo($file, PATHINFO_EXTENSION);
-                                // affiche le nom et le type
-                                echo "fichier : $file : type : " . filetype($dir . $file) . "<br />\n";
-                            }
-                        }
-                        // on ferme la connection
-                        closedir($dh);
-                    }
-                }*/
-
-                // 10) retrieve absolute zip entries filenames $fileZipLocation = "zip://".$tempFileName."#".$filename;
-
-                // 11) retrieve file content-type
-
-                // 12) we restrict loop to images only
-
-                // 13) save the image type that will be used lately in eval();
-
-                // 14) create a relative path destination variable
-
-                // 15) copy file from zip to thumbnails relative dir
-
-                // 16) Resize part
-
-
-                //$aFileImages[] = $filename;
+        //$aFileImages[] = $filename;
 
 
                     /*
@@ -148,8 +98,6 @@ echo " upload ok ";
                     // 20) close the zip
 
                     // 21) delete the zip
-
-            }
 
         $zip->close();
         // 22) check if there were at least 1 image in the zip
