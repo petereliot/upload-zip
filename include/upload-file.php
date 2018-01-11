@@ -47,7 +47,8 @@ define("IMG_DIR","../thumbnails/");
         }
         var_dump($aFileImages);
         var_dump($aZipFileName);
-        $zip->extractTo(IMG_DIR, $aZipFileName);
+        $vazy = $zip->extractTo(IMG_DIR, $aFileImages);
+        if($vazy) echo "\n extract to OK ";
 
         // on vérifie quoiqui n'y a dans le dossier ?
         $repertoire = opendir(IMG_DIR);
