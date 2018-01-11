@@ -43,13 +43,17 @@ echo " upload ok ";
 
     // 5) open the uploaded zip
     $res = $zip->open(IMG_DIR."/".$thename);
+
 	if ($res === true) {
+	    var_dump($zip);
             // here you can run a custom function for the particular extracted file
             // 6) loop on each entries of the zip
             for($i = 0; $i < $zip->numFiles; $i++) {
+                echo " <br/> ".$zip->numFiles;
                 // 7) retrieve local entrie filenames
                 // 8) retrieve file "basename" (filenames without directory)
                 $filename = $zip->getNameIndex($i);
+                echo " <br/> ".$filename;
                 //$zip->extractTo(IMG_DIR."/", array($zip->getNameIndex($i)));
                 $zip->extractTo(IMG_DIR."/" . $filename, array('*.jpg','*.jpeg','*.png','*.gif') );
 
@@ -110,5 +114,6 @@ echo " upload ok ";
 
     }
     else {
-        json_encode("error");
+	    echo " Erreur de dezippage ";
+        //json_encode("error");
     }
