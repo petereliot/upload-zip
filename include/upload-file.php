@@ -27,6 +27,7 @@ define("IMG_DIR","../thumbnails/");
 
     $aFileImages=[];
     $aZipFileName=[];
+
     $zip = new ZipArchive();
 
     $res = $zip->open(IMG_DIR.$thename);
@@ -44,31 +45,16 @@ define("IMG_DIR","../thumbnails/");
             {
                 $aFileImages[] = $toFileName;
                 $aZipFileName[] = $filename;
-                copy("zip://".IMG_DIR.$thename."#".$zip->getNameIndex($i), "IMG_DIR".$fileinfo['basename']);
+                echo "<br/>".$zip->getNameIndex($i);
+                echo "<br>zip://".IMG_DIR.$thename."#".$zip->getNameIndex($i);
+                echo "<br>"."../thumbnails/".$toFileName;
+               var_dump(copy("zip://".IMG_DIR.$thename."#".$zip->getNameIndex($i), "../thumbnails/".$toFileName));
+
             }
         }
-
-        var_dump($aFileImages);
-        var_dump($aZipFileName);
-       // $vazy = $zip->extractTo(IMG_DIR, $aFileImages);
-        if($vazy) echo "\n extract to OK ";
-
-        // on vérifie quoiqui n'y a dans le dossier ?
-        $repertoire = opendir(IMG_DIR);
-        $fichier = readdir($repertoire);
-        echo " \n file == ".$fichier;
-        while ($fichier) {
-
-            echo "\n ".$fichier;
-            if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
-            {
-               echo "\n ".$fichier;
-            }
-            $fichier = readdir($repertoire);
-        }
-        closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
 
         $zip->close();
+        unlink(IMG_DIR.$thename); // On efface le doc zip
     }
     else {
         echo " Erreur de dezippage ";
