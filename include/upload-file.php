@@ -25,6 +25,7 @@ define("IMG_DIR/","../thumbnails");
     }
 
     $aFileImages=[];
+    $aZipFileName=[];
     $zip = new ZipArchive();
 
     $res = $zip->open(IMG_DIR.$thename);
@@ -44,8 +45,8 @@ define("IMG_DIR/","../thumbnails");
                 $aZipFileName[] = $filename;
             }
         }
-        $to = "\n".IMG_DIR."/" . $fileinfo["basename"];
-
+        var_dump($aFileImages);
+        var_dump($aZipFileName);
         $zip->extractTo(IMG_DIR, $aZipFileName);
 
         // on vérifie quoiqui n'y a dans le dossier ?
