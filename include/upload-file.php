@@ -46,22 +46,19 @@ echo " upload ok ";
 
 	if ($res === true) {
 
-        print_r($zip);
-        var_dump($zip);
-        echo "\nNombre de fichiers : " . $zip->numFiles . "\n";
-        echo "\nStatut : " . $zip->status  . "\n";
-        echo "\nStatut du système : " . $zip->statusSys . "\n";
-        echo "\nNom du fichier : " . $zip->filename . "\n";
-        echo "\nCommentaire : " . $zip->comment . "\n";
-
 
         for($i = 0; $i < $zip->numFiles; $i++) {
             $ext = strtolower(pathinfo($zip->getNameIndex($i), PATHINFO_EXTENSION));
             //if ( substr( $entry, -1 ) == '/' ) continue; // skip directories
-            if(($ext == "jpg" || $ext == "png" || $ext == "gif" ) && (substr( $zip->getNameIndex($i), -1 ) !== '/') ) {
+            if((stristr($zip->statIndex($i)['name'],"__MACOSX") === false && stristr($zip->statIndex($i)['name'],".DS_Store") === false )
+                && ($ext == "jpg" || $ext == "png" || $ext == "gif" ) && (substr( $zip->getNameIndex($i), -1 ) !== '/') ) {
                 $filename = $zip->getNameIndex($i);
                 $fileinfo = pathinfo($filename);
-                copy("zip://" . $path . "#" . $filename, "/your/new/destination/" . $fileinfo['basename']);
+                echo "\n filename = ".$filename;
+                echo "\n $fileinfo = ".$fileinfo;
+                $from = "\n zip://" . $path . "#" . $filename;
+                $to = "\n".IMG_DIR."/" . $filename;
+               // copy("zip://" . $path . "#" . $filename, IMG_DIR."/" . $filename);
                 $aFileImages[] = $filename;
             }
         }
