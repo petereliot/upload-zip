@@ -2,28 +2,34 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Upload Zip file</title>
     <script type="text/javascript">
-      function uploadZip(triggerLink)
-      {
-            console.log(triggerLink);
-            // hide trigger link before promise
-            // write default message in info paragraph
-
-          document.getElementById("info").innerHTML = " Wait ";
-
-          //fetch POST DATAS to php script
-
-          fetch("include/upload-file.php")
-              .then(function(res){ return res.json(); })
-              .then(function(data){ console.log( JSON.stringify(data) )
-
-           }).catch (function (error) {
-              console.log('Request failed', error);
-          });
+      function uploadZip(triggerLink) {
+          triggerLink.style.display = 'none';
+          document.querySelector('#message').innerHTML = 'wait...';
+          fetch('include/upload-file.php', { method: 'POST', body: new FormData(document.querySelector('#the_form')) })
+              .then(r => {
+              console.log(r.headers.get('content-type'));
+          //    return r.json();
+          return r.headers.get('content-type').includes('json') ? r.json() : r.text()
+      } ).
+          then(r => {
+              console.log(r);
+          let html = '';
+          if(Array.isArray(r)) {
+              r.forEach(v => html += `<img src="thumbnails/${v}" style="border: 1px solid #ccc; border-radius: 2px; padding: 4px; margin: 10px;"/>`);
+          }else if(r.includes('Request Entity Too Large')) {
+              html = '<font color="red" >Request Entity Too Large</font>';
+          }else{
+              html = `<font color="red">${r}</font>`;
+          }
+          document.querySelector('#message').innerHTML = html;
+          triggerLink.style.display = 'block';
+      }).catch(e => {
+              console.warn(e);
+          triggerLink.style.display = 'block';
+      });
       }
-
-
     </script>
   </head>
   <body>
@@ -34,6 +40,6 @@
         <!--a href="#" onclick="uploadZip(this);">Download</a-->
         <input type="submit" value="Send" />
     </form>
-    <p id="info"></p>
+    <p id="message"></p>
   </body>
 </html>
