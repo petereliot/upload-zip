@@ -103,7 +103,7 @@ echo " upload ok ";
             // Si le fichier n'est pas un répertoire…
             if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
             {
-                unlink($chemin); // On efface.
+               echo " fichier trouvé ok !! ".$fichier;
             }
         }
         closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
