@@ -55,12 +55,13 @@ echo " upload ok ";
         echo "Commentaire : " . $zip->comment . "\n";
 
         for ($i=0; $i<$zip->numFiles;$i++) {
-
+//if(stristr($string, 'terre') === FALSE)
             echo "index : $i\n";
             echo " quoi :: ".$zip->statIndex($i)['name'];
-            if ($zip->statIndex($i)['name']!="__MACOSX" && && $zip->statIndex($i)['name'] !== ".DS_Store")) {
+            $ext = strtolower(pathinfo($zip->statIndex($i)['name'], PATHINFO_EXTENSION));
+            if (stristr($zip->statIndex($i)['name'],"__MACOSX") === false && stristr($zip->statIndex($i)['name'],".DS_Store") === false )
+                && ($ext == "jpg" || $ext == "png" || $ext == "gif" ) {
                 print_r($zip->statIndex($i));
-                echo "\r\n ".pathinfo($zip->statIndex($i)['name'], PATHINFO_EXTENSION);;
             }
         }
         echo "Nombre de fichiers :" . $zip->numFiles . "\n";
