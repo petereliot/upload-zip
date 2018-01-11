@@ -43,11 +43,13 @@ define("IMG_DIR","../thumbnails/");
             {
                 $aFileImages[] = $toFileName;
                 $aZipFileName[] = $filename;
+                copy("zip://".IMG_DIR.$thename."#".$zip->getNameIndex($i), "IMG_DIR".$fileinfo['basename']);
             }
         }
+
         var_dump($aFileImages);
         var_dump($aZipFileName);
-        $vazy = $zip->extractTo(IMG_DIR, $aFileImages);
+       // $vazy = $zip->extractTo(IMG_DIR, $aFileImages);
         if($vazy) echo "\n extract to OK ";
 
         // on vérifie quoiqui n'y a dans le dossier ?
