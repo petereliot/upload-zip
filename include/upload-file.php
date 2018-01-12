@@ -2,19 +2,18 @@
 define("IMG_DIR","../thumbnails/");
 
     // vide le dossier image avant tout
-    $dossier_traite = IMG_DIR;
-    $repertoire = opendir($dossier_traite); // On définit le répertoire dans lequel on souhaite travailler.
-    while (($fichier = readdir($repertoire) !== false)) {// On lit chaque fichier du répertoire dans la boucle.
-        $chemin = $dossier_traite."".$fichier; // On définit le chemin du fichier à effacer.
-        // Si le fichier n'est pas un répertoire…
-        echo " file to del = ".$fichier;
+    $repertoire = opendir(IMG_DIR);
+    while (($fichier = readdir($repertoire) !== false)) {
         if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
         {
-            unlink($chemin); // On efface.
+            unlink(IMG_DIR."".$fichier);
         }
     }
-    closedir($repertoire); // Ne pas oublier de fermer le dossier ***EN DEHORS de la boucle*** ! Ce qui évitera à PHP beaucoup de calculs et des problèmes liés à l'ouverture du dossier.
+    closedir($repertoire);
 
+    // #TODO : reste à vérifier le type du document uploadé
+    // #TODO : Si c'est un Zip : on gère le zip (sinon on vérifie que c'est une image et on upload direct l'image !!
+    //  gere le upload du zip
     $thename = ""; // the file uploaded
     if ($_FILES["pictures"]["error"] == UPLOAD_ERR_OK) {
 
@@ -25,6 +24,7 @@ define("IMG_DIR","../thumbnails/");
         }
     }
 
+    // dézippe le fichier : #todo : vérifier que c'est un zip !!
     $aFileImages=[];
     $aZipFileName=[];
 
@@ -39,16 +39,12 @@ define("IMG_DIR","../thumbnails/");
             $filename = $zip->getNameIndex($i);
             $fileinfo = pathinfo($zip->getNameIndex($i));
             $ext = $fileinfo['extension'];
-            $toFileName = $fileinfo["basename"];
             if((stristr($filename,"__MACOSX") === false && stristr($filename,".DS_Store") === false )
                 && ($ext == "jpg" || $ext == "png" || $ext == "gif" ) && (substr( $filename, -1 ) !== '/') )
             {
-                $aFileImages[] = $toFileName;
+                $aFileImages[] = $fileinfo["basename"];
                 $aZipFileName[] = $filename;
-                echo "<br/>".$zip->getNameIndex($i);
-                echo "<br>zip://".IMG_DIR.$thename."#".$zip->getNameIndex($i);
-                echo "<br>"."../thumbnails/".$toFileName;
-               var_dump(copy("zip://".IMG_DIR.$thename."#".$zip->getNameIndex($i), "../thumbnails/".$toFileName));
+                copy("zip://".IMG_DIR.$thename."#".$zip->getNameIndex($i), "../thumbnails/".$fileinfo["basename"]);
 
             }
         }
@@ -59,37 +55,42 @@ define("IMG_DIR","../thumbnails/");
     else {
         echo " Erreur de dezippage ";
     }
-                    /*
-                     * retrieve origin image width & height
-                     *
-                     * origin ratio => 1200 / 900 = 1.33
-                     *
-                     * both new width & height must be defined before!
-                     *
-                     *  1.33 > 1
-                     *
-                     *  150 / 1.33 = 112.5
-                     *
-                     * imagecreatetruecolor()
-                     * imagecreatefromXXX()
-                     * imagecopyresampled()
-                     * imageXXX()
-                    */
+
+    // liste des fichiers correctement uploadés pour retailler l'image
+    $repertoire = opendir(IMG_DIR);
+    while (($fichier = readdir($repertoire) !== false)) {
+        if ($fichier != ".." AND $fichier != "." AND !is_dir($fichier))
+        {
+            echo " \n file in dir :: ".$fichier;
+            /*
+             * #TODO :
+             * retrieve origin image width & height
+             *
+             * origin ratio => 1200 / 900 = 1.33
+             *
+             * both new width & height must be defined before!
+             *
+             *  1.33 > 1
+             *
+             *  150 / 1.33 = 112.5
+             *
+             * imagecreatetruecolor()
+             * imagecreatefromXXX()
+             * imagecopyresampled()
+             * imageXXX()
+            */
 
 
-                    //$size = getimagesize($filename); // chaine avec height & width
+                //$size = getimagesize($filename); // chaine avec height & width
 
-                    // 17) for imagecreatefromXXX we can use eval(); with function that expect string as parameters
+                // 17) for imagecreatefromXXX we can use eval(); with function that expect string as parameters
 
-                    // 18) we cannot use eval with function imageXXX since first param is a resource
+                // 18) we cannot use eval with function imageXXX since first param is a resource
 
-                    // 19) finally push all imagenames in array of images
-
-                    // 20) close the zip
-
-                    // 21) delete the zip
-
-        // 22) check if there were at least 1 image in the zip
+                // 19) finally push all imagenames in array of images
+        }
+    }
+    closedir($repertoire);
 
         // need to force apache header content type to json if the server always return "text/html" content type
         header('Content-Type: application/json');
