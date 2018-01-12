@@ -4,8 +4,6 @@ define("NEW", 150);
 
     // vide le dossier image avant tout
     $handle = opendir("../thumbnails");
-    var_dump($handle);
-
     while (false !== ($entry = readdir($handle))) {
         $chemin = "../thumbnails/".$entry; // On définit le chemin du fichier à effacer.
         if ($entry != "." && $entry != ".." AND !is_dir($entry)) {
@@ -61,7 +59,6 @@ define("NEW", 150);
 
     // liste des fichiers correctement uploadés pour retailler l'image
     $handle = opendir("../thumbnails");
-	var_dump($handle);
 
     while (false !== ($entry = readdir($handle))) {
 
@@ -70,8 +67,7 @@ define("NEW", 150);
             $fileinfo = pathinfo($imgFile);
             $ext = $fileinfo['extension'];
             $newImgFile = IMG_DIR.$fileinfo['extension']."-b.".$ext;
-            echo "<br/>".$ext;
-            var_dump($fileinfo);
+
             // retrieve origin image width & height
             $dimensions = getimagesize($imgFile);
 
@@ -83,7 +79,7 @@ define("NEW", 150);
             $width = 150;
             $height = 150;
 
-            // ratio_oirg > 1 : $width/$height = 1
+            // $ratio_orig > 1 : $width/$height = 1
             if ($width/$height > $ratio_orig)
             {
                 // 150 / 1.33 = 112.5
@@ -96,7 +92,7 @@ define("NEW", 150);
                 $new_height = $width/$ratio_orig;
             }
             // Redimensionnement
-            $image_p = imagecreatetruecolor($width, $height);
+            $image_p = imagecreatetruecolor($new_width, $new_height);
             switch($ext){
                 case "jpg" : {
                     $image = imagecreatefromjpeg($imgFile);
@@ -122,7 +118,7 @@ define("NEW", 150);
             // Libération de la mémoire
             imagedestroy($image_p);
 
-            $aFileImages[]=$imgFile; //finally push all imagenames in array of images
+            $aFileImages[]=$entry; //finally push all imagenames in array of images
         }
     }
     closedir($handle);
