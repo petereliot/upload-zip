@@ -33,12 +33,13 @@
     </script>
   </head>
   <body>
-    <form id="the_form" action="include/upload-file.php" enctype="multipart/form-data" method="post">
+  <!--  action="include/upload-file.php"  -->
+    <form id="the_form"enctype="multipart/form-data" method="post">
 
         <input type="hidden" name="MAX_FILE_SIZE" value="3000000">
         <input name="pictures" type="file" id="pictures" size="50" />
-        <!--a href="#" onclick="uploadZip(this);">Download</a-->
-        <input type="submit" value="Send" />
+        <a href="#" onclick="uploadZip(this);">Download</a>
+        <!--input type="submit" value="Send" /-->
     </form>
     <p id="message"></p>
   </body>
